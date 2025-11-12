@@ -1,5 +1,6 @@
 # include "raylib.h"
 # include <stdio.h>
+#include "movimento.h"
 # define ALTURA_MAPA 20
 # define LARGURA_MAPA 24
 
@@ -34,11 +35,13 @@ void CarregaMapa(const char *arqNivel){
 }
 
 int main(){
+    //incializaçao variaveis de posiçao aviao, tiro
+    float aviao_x = LARGURA_MAPA/2, aviao_y = ALTURA_MAPA , tiro_x, tiro_y;
+    int tiroativo;
 
     //Inicialização da janela do jogo:
     const int screenWidth = 960;
     const int screenHeight = 800;
-
     InitWindow(screenWidth, screenHeight, "River-INF");
 
     SetTargetFPS(60);   //Configura o jogo para rodar a 60 frames por segundo
@@ -92,9 +95,22 @@ int main(){
                             DrawTexture(combustivel, x * 40, y * 40, WHITE);
                             break;
                     }
+                     
                 }
+                    
             }
-
+            //chamada das funçoes que movem o aviao
+            moveteclado_aviao(&aviao_x);
+            move_constante_aviao(&aviao_y); 
+            //chamda funçoe que analisa tiro
+           tiro_origem(&tiro_y, &tiro_x, &aviao_x, &aviao_y);
+            tiroativo = tiro_movimento(&tiro_y);
+            if(tiroativo == 1){
+                 DrawTexture(tiro, tiro_x * 40, tiro_y * 40, WHITE);
+            }
+            // desenho do tiro 
+            DrawTexture(aviao, aviao_x *40, aviao_y *40, WHITE);
+           
         EndDrawing();
 
     }
